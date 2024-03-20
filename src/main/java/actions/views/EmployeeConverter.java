@@ -1,5 +1,8 @@
 package actions.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import constants.AttributeConst;
 import constants.JpaConst;
 import models.Employee;
@@ -22,7 +25,7 @@ public class EmployeeConverter {
                 ev.getCode(),
                 ev.getName(),
                 ev.getPassword(),
-                ev.getAdminFlad() == null
+                ev.getAdminFlag() == null
                         ? null
                         : ev.getAdminFlag() == AttributeConst.ROLE_ADMIN.getIntegerValue()
                                 ? JpaConst.ROLE_ADMIN
@@ -33,7 +36,7 @@ public class EmployeeConverter {
                         ? null
                         : ev.getDeleteFlag() == AttributeConst.DEL_FLAG_TRUE.getIntegerValue()
                                 ? JpaConst.EMP_DEL_TRUE
-                                : JpaConst.EMP_DEL_FALSE;
+                                : JpaConst.EMP_DEL_FALSE);
     }
 
     /**
@@ -44,7 +47,7 @@ public class EmployeeConverter {
     public static EmployeeView toView(Employee e) {
 
         if(e == null) {
-            reeturn null;
+            return null;
         }
 
         return new EmployeeView(
@@ -63,7 +66,7 @@ public class EmployeeConverter {
                         ? null
                         : e.getDeleteFlag() == JpaConst.EMP_DEL_TRUE
                                 ? AttributeConst.DEL_FLAG_TRUE.getIntegerValue()
-                                : AttributeConst.DEL_FLAG_FALSE.getIntegerValue();
+                                : AttributeConst.DEL_FLAG_FALSE.getIntegerValue());
     }
 
     /**
@@ -93,7 +96,7 @@ public class EmployeeConverter {
         e.setPassword(ev.getPassword());
         e.setAdminFlag(ev.getAdminFlag());
         e.setCreatedAt(ev.getCreatedAt());
-        e.setUpdatedAt(ev.getUpdateAt());
+        e.setUpdatedAt(ev.getUpdatedAt());
         e.setDeleteFlag(ev.getDeleteFlag());
     }
 
