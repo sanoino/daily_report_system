@@ -17,7 +17,7 @@ import services.EmployeeService;
  * 従業員に関わる処理を行うActionクラス
  *
  */
-public class EmployeeAction extends ActionBase{
+public class EmployeeAction extends ActionBase {
 
     private EmployeeService service;
 
@@ -25,7 +25,7 @@ public class EmployeeAction extends ActionBase{
      * メソッドを実行する
      */
     @Override
-    public void process() throws ServletException, IOException{
+    public void process() throws ServletException, IOException {
 
         service = new EmployeeService();
 
@@ -40,13 +40,13 @@ public class EmployeeAction extends ActionBase{
      * @throws ServletException
      * @throws IOException
      */
-    public void index() throws ServletException, IOException{
+    public void index() throws ServletException, IOException {
 
-      //指定されたページ数の一覧画面に表示するデータを取得
+        //指定されたページ数の一覧画面に表示するデータを取得
         int page = getPage();
         List<EmployeeView> employees = service.getPerPage(page);
 
-      //全ての従業員データの件数を取得
+        //全ての従業員データの件数を取得
         long employeeCount = service.countAll();
 
         putRequestScope(AttributeConst.EMPLOYEES, employees);
@@ -55,16 +55,15 @@ public class EmployeeAction extends ActionBase{
         putRequestScope(AttributeConst.MAX_ROW, JpaConst.ROW_PER_PAGE);
         System.out.println(employeeCount);
 
-      //セッションにフラッシュメッセージが設定されている場合はリクエストスコープに移し替え、セッションからは削除する
+        //セッションにフラッシュメッセージが設定されている場合はリクエストスコープに移し替え、セッションからは削除する
         String flush = getSessionScope(AttributeConst.FLUSH);
-        if(flush != null) {
+        if (flush != null) {
             putRequestScope(AttributeConst.FLUSH, flush);
             removeSessionScope(AttributeConst.FLUSH);
         }
 
         //一覧画面を表示
         forward(ForwardConst.FW_EMP_INDEX);
-
 
     }
 
@@ -73,12 +72,12 @@ public class EmployeeAction extends ActionBase{
      * @throws ServletException
      * @throws IOException
      */
-    public void entryNew() throws ServletException, IOException{
+    public void entryNew() throws ServletException, IOException {
 
         putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
         putRequestScope(AttributeConst.EMPLOYEE, new EmployeeView()); //空の従業員インスタンス
 
-      //新規登録画面を表示
+        //新規登録画面を表示
         forward(ForwardConst.FW_EMP_NEW);
 
     }
@@ -88,12 +87,12 @@ public class EmployeeAction extends ActionBase{
      * @throws ServletException
      * @throws IOException
      */
-    public void create() throws ServletException, IOException{
+    public void create() throws ServletException, IOException {
 
-      //CSRF対策 tokenのチェック
-        if(checkToken()) {
+        //CSRF対策 tokenのチェック
+        if (checkToken()) {
 
-          //パラメータの値を元に従業員情報のインスタンスを作成する
+            //パラメータの値を元に従業員情報のインスタンスを作成する
             EmployeeView ev = new EmployeeView(
                     null,
                     getRequestParam(AttributeConst.EMP_CODE),
@@ -104,28 +103,28 @@ public class EmployeeAction extends ActionBase{
                     null,
                     AttributeConst.DEL_FLAG_FALSE.getIntegerValue());
 
-          //アプリケーションスコープからpepper文字列を取得
+            //アプリケーションスコープからpepper文字列を取得
             String pepper = getContextScope(PropertyConst.PEPPER);
 
             //従業員情報登録
-            List<String> errors = service.create(ev,  pepper);
+            List<String> errors = service.create(ev, pepper);
 
-            if(errors.size() > 0) {
-              //登録中にエラーがあった場合
+            if (errors.size() > 0) {
+                //登録中にエラーがあった場合
 
                 putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
                 putRequestScope(AttributeConst.EMPLOYEE, ev); //入力された従業員情報
                 putRequestScope(AttributeConst.ERR, errors); //エラーのリスト
 
-              //新規登録画面を再表示
+                //新規登録画面を再表示
                 forward(ForwardConst.FW_EMP_NEW);
             } else {
-              //登録中にエラーがなかった場合
+                //登録中にエラーがなかった場合
 
-              //セッションに登録完了のフラッシュメッセージを設定
+                //セッションに登録完了のフラッシュメッセージを設定
                 putSessionScope(AttributeConst.FLUSH, MessageConst.I_REGISTERED.getMessage());
 
-              //一覧画面にリダイレクト
+                //一覧画面にリダイレクト
                 redirect(ForwardConst.ACT_EMP, ForwardConst.CMD_INDEX);
             }
         }
@@ -137,19 +136,19 @@ public class EmployeeAction extends ActionBase{
      * @throws ServletException
      * @throws IOException
      */
-    public void show() throws ServletException, IOException{
+    public void show() throws ServletException, IOException {
 
-      //idを条件に従業員データを取得する
+        //idを条件に従業員データを取得する
         EmployeeView ev = service.findOne(toNumber(getRequestParam(AttributeConst.EMP_ID)));
 
-        if(ev == null || ev.getDeleteFlag() == AttributeConst.DEL_FLAG_TRUE.getIntegerValue()) {
+        if (ev == null || ev.getDeleteFlag() == AttributeConst.DEL_FLAG_TRUE.getIntegerValue()) {
 
-          //データが取得できなかった、または論理削除されている場合はエラー画面を表示
+            //データが取得できなかった、または論理削除されている場合はエラー画面を表示
             forward(ForwardConst.FW_ERR_UNKNOWN);
             return;
         }
 
-        putRequestScope(AttributeConst.EMPLOYEE, ev);  //取得した従業員情報
+        putRequestScope(AttributeConst.EMPLOYEE, ev); //取得した従業員情報
 
         //詳細画面を表示
         forward(ForwardConst.FW_EMP_SHOW);
@@ -160,14 +159,14 @@ public class EmployeeAction extends ActionBase{
      * @throws ServletException
      * @throws IOException
      */
-    public void edit() throws ServletException, IOException{
+    public void edit() throws ServletException, IOException {
 
-      //idを条件に従業員データを取得する
+        //idを条件に従業員データを取得する
         EmployeeView ev = service.findOne(toNumber(getRequestParam(AttributeConst.EMP_ID)));
 
-        if(ev == null || ev.getDeleteFlag() == AttributeConst.DEL_FLAG_TRUE.getIntegerValue()) {
+        if (ev == null || ev.getDeleteFlag() == AttributeConst.DEL_FLAG_TRUE.getIntegerValue()) {
 
-          //データが取得できなかった、または論理削除されている場合はエラー画面を表示
+            //データが取得できなかった、または論理削除されている場合はエラー画面を表示
             forward(ForwardConst.FW_ERR_UNKNOWN);
             return;
         }
@@ -175,7 +174,54 @@ public class EmployeeAction extends ActionBase{
         putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
         putRequestScope(AttributeConst.EMPLOYEE, ev); //取得した従業員情報
 
-      //編集画面を表示する
+        //編集画面を表示する
         forward(ForwardConst.FW_EMP_EDIT);
+    }
+
+    /**
+     * 更新を行う
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void update() throws ServletException, IOException {
+
+        //CSRF対策 tokenのチェック
+        if (checkToken()) {
+            //パラメータの値を元に従業員情報のインスタンスを作成する
+            EmployeeView ev = new EmployeeView(
+                    toNumber(getRequestParam(AttributeConst.EMP_ID)),
+                    getRequestParam(AttributeConst.EMP_CODE),
+                    getRequestParam(AttributeConst.EMP_NAME),
+                    getRequestParam(AttributeConst.EMP_PASS),
+                    toNumber(getRequestParam(AttributeConst.EMP_ADMIN_FLG)),
+                    null,
+                    null,
+                    AttributeConst.DEL_FLAG_FALSE.getIntegerValue());
+
+            //アプリケーションスコープからpepper文字列を取得
+            String pepper = getContextScope(PropertyConst.PEPPER);
+
+            //従業員情報更新
+            List<String> errors = service.update(ev, pepper);
+
+            if(errors.size() > 0) {
+                //更新中にエラーが発生した場合
+
+                putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
+                putRequestScope(AttributeConst.EMPLOYEE, ev); //入力された従業員情報
+                putRequestScope(AttributeConst.ERR, errors); //エラーのリスト
+
+                //編集画面を再構築
+                forward(ForwardConst.FW_EMP_EDIT);
+            } else {
+                //更新中にエラーがなかった場合
+
+                //セッションに更新完了のフラッシュメッセージを設定
+                putRequestScope(AttributeConst.FLUSH, MessageConst.I_UPDATED.getMessage());
+
+                //一覧画面にリダイレクト
+                redirect(ForwardConst.ACT_EMP, ForwardConst.CMD_INDEX);
+            }
+        }
     }
 }
