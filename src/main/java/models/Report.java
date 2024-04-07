@@ -84,6 +84,30 @@ public class Report {
     private String content;
 
     /**
+     * 商談先
+     */
+    @Column(name = JpaConst.REP_COL_CLIENT, nullable = false)
+    private String partner;
+
+    /**
+     * 商談内容
+     */
+    @Column(name = JpaConst.REP_COL_MEETING, length = 255, nullable = false)
+    private String meeting;
+
+    /**
+     * 出勤日時
+     */
+    @Column(name = JpaConst.REP_COL_STARTED_AT, nullable = false)
+    private String startedAt;
+
+    /**
+     * 退勤日時
+     */
+    @Column(name = JpaConst.REP_COL_ENDED_AT, nullable = false)
+    private String endedAt;
+
+    /**
      * 登録日時
      */
     @Column(name = JpaConst.REP_COL_CREATED_AT, nullable = false)

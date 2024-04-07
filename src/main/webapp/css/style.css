@@ -139,16 +139,26 @@ table#report_list th {
 }
 
 table#report_list .report_name {
-    width: 20%;
+    width: 14%;
     padding: 10px 2%;
 }
 
 table#report_list .report_date {
-    width: 20%;
+    width: 15%;
+}
+
+table#report_list .report_started_at {
+    width: 10%;
+    padding: 10px 2%;
+}
+
+table#report_list .report_ended_at {
+    width: 10%;
+    padding: 10px 2%;
 }
 
 table#report_list .report_title {
-    width: 37%;
+    width: 30%;
 }
 
 table#report_list .report_action {
@@ -161,4 +171,14 @@ pre {
 
 h3 {
     font-size: larger;
+}
+
+table#client_list th {
+    width: 30%;
+    padding: 10px 2%;
+}
+
+table#client_list td {
+    width: 29%;
+    padding: 10px 2%;
 }

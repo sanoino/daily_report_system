@@ -11,6 +11,7 @@ public enum ForwardConst {
     ACT("action"),
     ACT_TOP("Top"),
     ACT_EMP("Employee"),
+    ACT_CLI("Client"),
     ACT_REP("Report"),
     ACT_AUTH("Auth"),
 
@@ -36,6 +37,10 @@ public enum ForwardConst {
     FW_EMP_SHOW("employees/show"),
     FW_EMP_NEW("employees/new"),
     FW_EMP_EDIT("employees/edit"),
+    FW_CLI_INDEX("clients/index"),
+    FW_CLI_SHOW("clients/show"),
+    FW_CLI_NEW("clients/new"),
+    FW_CLI_EDIT("clients/edit"),
     FW_REP_INDEX("reports/index"),
     FW_REP_SHOW("reports/show"),
     FW_REP_NEW("reports/new"),

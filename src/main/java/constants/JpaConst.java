@@ -29,6 +29,20 @@ public interface JpaConst {
     int EMP_DEL_TRUE = 1; //削除フラグON(削除済み)
     int EMP_DEL_FALSE = 0; //削除フラグOFF(現役)
 
+    //顧客テーブル
+    String TABLE_CLI = "clients"; //テーブル名
+    //顧客テーブルカラム
+    String CLI_COL_ID = "id"; //id
+    String CLI_COL_CODE = "code"; //顧客番号
+    String CLI_COL_NAME = "name"; //氏名
+    String CLI_COL_CREATED_AT = "created_at"; //登録日時
+    String CLI_COL_UPDATED_AT = "updated_at"; //更新日時
+    String CLI_COL_DELETE_FLAG = "delete_flag"; //削除フラグ
+
+
+    int CLI_DEL_TRUE = 1; //削除フラグON(削除済み)
+    int CLI_DEL_FALSE = 0; //削除フラグOFF(現役)
+
     //日報テーブル
     String TABLE_REP = "reports"; //テーブル名
     //日報テーブルカラム
@@ -37,15 +51,21 @@ public interface JpaConst {
     String REP_COL_REP_DATE = "report_date"; //いつの日報かを示す日付
     String REP_COL_TITLE = "title"; //日報のタイトル
     String REP_COL_CONTENT = "content"; //日報の内容
+    String REP_COL_CLIENT = "partner"; //商談先
+    String REP_COL_MEETING = "meeting"; //商談内容
+    String REP_COL_STARTED_AT = "started_at"; //出勤時間
+    String REP_COL_ENDED_AT = "ended_at"; //退勤時間
     String REP_COL_CREATED_AT = "created_at"; //登録日時
     String REP_COL_UPDATED_AT = "updated_at"; //更新日時
 
     //Entity名
     String ENTITY_EMP = "employee"; //従業員
+    String ENTITY_CLI = "client"; //顧客
     String ENTITY_REP = "report"; //日報
 
     //JPQL内パラメータ
     String JPQL_PARM_CODE = "code"; //社員番号
+    String JPQL_PARM_CODE_C = "code"; //顧客番号
     String JPQL_PARM_PASSWORD = "password"; //パスワード
     String JPQL_PARM_EMPLOYEE = "employee"; //従業員
 
@@ -62,6 +82,17 @@ public interface JpaConst {
     //指定した社員番号を保持する従業員の件数を取得する
     String Q_EMP_COUNT_REGISTERED_BY_CODE = ENTITY_EMP + ".countRegisteredByCode";
     String Q_EMP_COUNT_REGISTERED_BY_CODE_DEF = "SELECT COUNT(e) FROM Employee AS e WHERE e.code = :" + JPQL_PARM_CODE;
+
+    //全ての顧客をidの降順に取得する
+    String Q_CLI_GET_ALL = ENTITY_CLI + ".getAll"; //name
+    String Q_CLI_GET_ALL_DEF = "SELECT c FROM Client AS c ORDER BY c.id DESC"; //query
+    //全ての顧客の件数を取得する
+    String Q_CLI_COUNT = ENTITY_CLI + ".count";
+    String Q_CLI_COUNT_DEF = "SELECT COUNT(c) FROM Client AS c";
+    //指定した顧客番号を保持する顧客の件数を取得する
+    String Q_CLI_COUNT_REGISTERED_BY_CODE = ENTITY_CLI + ".countRegisteredByCode";
+    String Q_CLI_COUNT_REGISTERED_BY_CODE_DEF = "SELECT COUNT(c) FROM Client AS c WHERE c.code = :" + JPQL_PARM_CODE_C;
+
     //全ての日報をidの降順に取得する
     String Q_REP_GET_ALL = ENTITY_REP + ".getAll";
     String Q_REP_GET_ALL_DEF = "SELECT r FROM Report AS r ORDER BY r.id DESC";

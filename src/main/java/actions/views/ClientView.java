@@ -1,6 +1,5 @@
 package actions.views;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
@@ -16,55 +15,25 @@ import lombok.Setter;
 @Setter //全てのクラスフィールドについてsetterを自動生成する(Lombok)
 @NoArgsConstructor //引数なしコンストラクタを自動生成する(Lombok)
 @AllArgsConstructor //全てのクラスフィールドを引数にもつ引数ありコンストラクタを自動生成する(Lombok)
-public class ReportView {
+public class ClientView {
 
     /**
      * id
      */
-    private Integer Id;
+    private Integer id;
 
     /**
-     * 日報を登録した従業員
+     * 顧客番号
      */
-    private EmployeeView employee;
+    private String code;
 
     /**
-     * いつの日報かを示す日付
+     * 氏名
      */
-    private LocalDate reportDate;
+    private String name;
 
     /**
-     * 日報のタイトル
-     */
-    private String title;
-
-    /**
-     * 日報の内容
-     */
-    private String content;
-
-    /**
-     * 商談先
-     */
-    private String partner;
-
-    /**
-     * 商談内容
-     */
-    private String meeting;
-
-    /**
-     * 出勤日時
-     */
-    private String startedAt;
-
-    /**
-     * 退勤日時
-     */
-    private String endedAt;
-
-    /**
-     * 登録日時
+     *登録日時
      */
     private LocalDateTime createdAt;
 
@@ -72,5 +41,10 @@ public class ReportView {
      * 更新日時
      */
     private LocalDateTime updatedAt;
+
+    /**
+     * 削除された顧客かどうか（現役：0、削除済み：1）
+     */
+    private Integer deleteFlag;
 
 }

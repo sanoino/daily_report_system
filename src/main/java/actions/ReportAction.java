@@ -6,12 +6,14 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 
+import actions.views.ClientView;
 import actions.views.EmployeeView;
 import actions.views.ReportView;
 import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.JpaConst;
 import constants.MessageConst;
+import services.ClientService;
 import services.ReportService;
 
 /**
@@ -21,6 +23,7 @@ import services.ReportService;
 public class ReportAction extends ActionBase {
 
     private ReportService service;
+    private ClientService clientService;
 
     /**
      * メソッドを実行する
@@ -29,10 +32,13 @@ public class ReportAction extends ActionBase {
     public void process() throws ServletException, IOException {
 
         service = new ReportService();
+        clientService = new ClientService();
+
 
         //メソッドを実行
         invoke();
         service.close();
+        clientService.close();
     }
 
     /**
@@ -73,7 +79,10 @@ public class ReportAction extends ActionBase {
      */
     public void entryNew() throws ServletException, IOException {
 
-        putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
+        List<ClientView> clients = clientService.getAll();
+
+        putRequestScope(AttributeConst.TOKEN, getTokenId());//CSRF対策用トークン
+        putRequestScope(AttributeConst.CLIENTS, clients);
 
         //日報情報の空のインスタンスに、日報の日付＝今日の日付を設定する
         ReportView rv = new ReportView();
@@ -113,6 +122,10 @@ public class ReportAction extends ActionBase {
                     day,
                     getRequestParam(AttributeConst.REP_TITLE),
                     getRequestParam(AttributeConst.REP_CONTENT),
+                    getRequestParam(AttributeConst.REP_CLIENT),
+                    getRequestParam(AttributeConst.REP_MEETING),
+                    getRequestParam(AttributeConst.REP_STARTED_AT),
+                    getRequestParam(AttributeConst.REP_ENDED_AT),
                     null,
                     null);
 
@@ -150,6 +163,7 @@ public class ReportAction extends ActionBase {
 
         //idを条件に日報データを取得する
         ReportView rv = service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+        ClientView cv = clientService.findOne(toNumber(getRequestParam(AttributeConst.REP_CLIENT)));
 
         if (rv == null) {
             //該当の日報データが存在しない場合はエラー画面を表示
@@ -157,6 +171,7 @@ public class ReportAction extends ActionBase {
         } else {
 
             putRequestScope(AttributeConst.REPORT, rv); //取得した日報データ
+            putRequestScope(AttributeConst.REP_CLIENT, cv);
 
             //詳細画面を表示
             forward(ForwardConst.FW_REP_SHOW);
@@ -170,6 +185,8 @@ public class ReportAction extends ActionBase {
      * @throws IOException
      */
     public void edit() throws ServletException, IOException {
+
+        List<ClientView> clients = clientService.getAll();
 
         //idを条件に日報データを取得する
         ReportView rv = service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
@@ -185,6 +202,7 @@ public class ReportAction extends ActionBase {
 
             putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
             putRequestScope(AttributeConst.REPORT, rv); //取得した日報データ
+            putRequestScope(AttributeConst.CLIENTS, clients);
 
             //編集画面を表示
             forward(ForwardConst.FW_REP_EDIT);
@@ -209,6 +227,10 @@ public class ReportAction extends ActionBase {
             rv.setReportDate(toLocalDate(getRequestParam(AttributeConst.REP_DATE)));
             rv.setTitle(getRequestParam(AttributeConst.REP_TITLE));
             rv.setContent(getRequestParam(AttributeConst.REP_CONTENT));
+            rv.setPartner(getRequestParam(AttributeConst.REP_CLIENT));
+            rv.setMeeting(getRequestParam(AttributeConst.REP_MEETING));
+            rv.setStartedAt(getRequestParam(AttributeConst.REP_STARTED_AT));
+            rv.setEndedAt(getRequestParam(AttributeConst.REP_ENDED_AT));
 
             //日報データを更新する
             List<String> errors = service.update(rv);
@@ -226,7 +248,7 @@ public class ReportAction extends ActionBase {
                 //更新中にエラーがなかった場合
 
                 //セッションに更新完了のフラッシュメッセージを設定
-                putRequestScope(AttributeConst.FLUSH, MessageConst.I_UPDATED.getMessage());
+                putSessionScope(AttributeConst.FLUSH, MessageConst.I_UPDATED.getMessage());
 
                 //一覧画面にリダイレクト
                 redirect(ForwardConst.ACT_REP, ForwardConst.CMD_INDEX);

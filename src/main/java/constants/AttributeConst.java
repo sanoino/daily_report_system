@@ -33,6 +33,14 @@ public enum AttributeConst {
     EMP_NAME("name"),
     EMP_ADMIN_FLG("admin_flag"),
 
+    // 顧客管理
+    CLIENT("client"),
+    CLIENTS("clients"),
+    CLI_COUNT("clients_count"),
+    CLI_ID("id"),
+    CLI_CODE("code"),
+    CLI_NAME("name"),
+
     // 管理者フラグ
     ROLE_ADMIN(1),
     ROLE_GENERAL(0),
@@ -48,7 +56,11 @@ public enum AttributeConst {
     REP_ID("id"),
     REP_DATE("report_date"),
     REP_TITLE("title"),
-    REP_CONTENT("content_msg");
+    REP_CONTENT("content_msg"),
+    REP_CLIENT("partner"),
+    REP_MEETING("meeting"),
+    REP_STARTED_AT("started_at"),
+    REP_ENDED_AT("ended_at");
 
     private final String text;
     private final Integer i;
@@ -70,6 +82,5 @@ public enum AttributeConst {
     public Integer getIntegerValue() {
         return this.i;
     }
-
 
 }

@@ -28,6 +28,29 @@
 <label for="${AttributeConst.REP_CONTENT.getValue()}">内容</label><br />
 <textarea name="${AttributeConst.REP_CONTENT.getValue()}" id="${AttributeConst.REP_CONTENT.getValue()}" rows="10" cols="50">${report.content}</textarea>
 <br /><br />
+
+<label for="${AttributeConst.REP_CLIENT.getValue()}">商談先：</label>
+<select name="${AttributeConst.REP_CLIENT.getValue()}" id="${AttributeConst.REP_CLIENT.getValue()}">
+  <option value="">--選択してください--</option>
+  <c:forEach var="client" items="${clients}">
+    <option value="${client.id}"><c:out value="${client.name}"></c:out></option>
+  </c:forEach>
+</select>
+<br /><br />
+
+<label for="${AttributeConst.REP_MEETING.getValue()}">商談状況</label><br />
+<textarea name="${AttributeConst.REP_MEETING.getValue()}" id="${AttributeConst.REP_MEETING.getValue()}" rows="10" cols="50">${report.meeting}</textarea>
+<br /><br />
+
+<label for="${AttributeConst.REP_STARTED_AT.getValue()}">出勤時間：</label>
+<input type="time" id="${AttributeConst.REP_STARTED_AT.getValue()}" name="${AttributeConst.REP_STARTED_AT.getValue()}" value="09:00" required />
+
+<br /><br />
+
+<label for="${AttributeConst.REP_ENDED_AT.getValue()}">退勤時間：</label>
+<input type="time" id="${AttributeConst.REP_ENDED_AT.getValue()}" name="${AttributeConst.REP_ENDED_AT.getValue()}" value="18:00" required />
+<br /><br />
+
 <input type="hidden" name="${AttributeConst.REP_ID.getValue()}" value="${report.id}" />
 <input type="hidden" name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
 <button type="submit">投稿</button>
