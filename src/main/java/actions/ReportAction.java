@@ -163,12 +163,14 @@ public class ReportAction extends ActionBase {
 
         //idを条件に日報データを取得する
         ReportView rv = service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
-        ClientView cv = clientService.findOne(toNumber(getRequestParam(AttributeConst.REP_CLIENT)));
 
         if (rv == null) {
             //該当の日報データが存在しない場合はエラー画面を表示
             forward(ForwardConst.FW_ERR_UNKNOWN);
         } else {
+
+            ClientView cv = clientService.findOne(toNumber(rv.getPartner()));
+            System.out.println(cv.getName());
 
             putRequestScope(AttributeConst.REPORT, rv); //取得した日報データ
             putRequestScope(AttributeConst.REP_CLIENT, cv);

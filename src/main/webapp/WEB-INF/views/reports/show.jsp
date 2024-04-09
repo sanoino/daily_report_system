@@ -29,7 +29,7 @@
                 </tr>
                 <tr>
                     <th>商談先</th>
-                    <td><pre><c:out value="${report.partner}" /></pre></td>
+                    <td><pre><c:out value="${partner.id}" />：<c:out value="${partner.name}" /></pre></td>
                 </tr>
                 <tr>
                     <th>商談状況</th>
